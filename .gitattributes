@@ -1,0 +1,3 @@
+*.webp binary
+*.md text eol=lf
+*.yml text eol=lf

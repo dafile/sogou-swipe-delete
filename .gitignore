@@ -1,0 +1,8 @@
+data/
+*.log
+*.idsig
+*.keystore
+*.jks
+assets/
+sogou_dec/
+sogou_dec2/

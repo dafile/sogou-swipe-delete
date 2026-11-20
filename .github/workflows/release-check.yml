@@ -1,0 +1,31 @@
+name: Release check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify release layout
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f README.md
+          test -f LICENSE
+          test -f CHANGELOG.md
+          test -f docs/PATCH_NOTES_zh.md
+          test -f docs/RELEASE_NOTES_r32.md
+          test -f docs/screenshots/desktop.webp
+          test -f docs/screenshots/mobile.webp
+          grep -q "v10.32.21-r32" README.md
+          grep -q "v10.32.21-r32" CHANGELOG.md
+      - name: Verify recorded asset checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -qi "AE2A5F46555A0F0BD5F0E35EC03EAC3FB2D62305716DB221EC0D0822BA060E19" docs/RELEASE_NOTES_r32.md
