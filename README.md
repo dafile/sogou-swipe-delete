@@ -1,6 +1,6 @@
 # Sogou Swipe Delete
 
-搜狗输入法 Android 修改版：在删除键上补齐上滑清空、下滑恢复、左滑清空与点按单删手势。
+搜狗输入法 Android 修改版：在删除键上补齐上滑清空、下滑恢复、左滑清空手势，同时完整保留原生单击单删与长按逐字连删。
 
 ## 项目定位
 
@@ -11,11 +11,12 @@
 | 手势 | 行为 |
 |---|---|
 | 删除键上滑 | 清空当前输入框文本 |
-| 删除键下滑 | 恢复刚才清空的内容 |
+| 删除键下滑 | 恢复最近一次上滑清空前的完整文本（即使清空后又输入了新内容，仍恢复旧文本） |
 | 删除键左滑 | 清空当前输入框文本 |
-| 短按删除键 | 删除光标前一个字符 |
+| 短按删除键 | 删除光标前一个字符（搜狗原生行为） |
+| 长按删除键 | 逐字连续删除（搜狗原生行为） |
 
-实测环境：Xiaomi MI 9 / Android 11，9 键布局；连续 5 轮“输入 → 上滑清空 → 下滑恢复”全部完整恢复。MuMu 模拟器因虚拟显示器/输入法窗口绑定不稳定，仅用作辅助调试，不作为最终验收环境。
+实测环境：Xiaomi MI 9 / Android 11，26 键布局；单击单删、长按连删、上滑清空、下滑恢复与“清空后新输入再下滑恢复旧文本”边界场景全部通过。MuMu 模拟器因虚拟显示器/输入法窗口绑定不稳定，仅用作辅助调试，不作为最终验收环境。
 
 ## 界面截图
 
@@ -29,11 +30,11 @@
 
 ## 快速开始
 
-1. 从 GitHub Release 下载 `sogou-swipe-delete-android-arm64-v10.32.21-r32.apk`。
+1. 从 GitHub Release 下载 `sogou-swipe-delete-android-arm64-v10.32.21-r37.apk`。
 2. 在 Android 64 位设备上允许安装未知来源应用。
-3. 安装 APK。若设备已有同包名的系统版本，需先确认该系统应用可以被用户版本覆盖。
+3. 安装 APK。若设备已有同包名的系统版本，需先确认该系统应用可以被用户版本覆盖；MI9 等 root 设备覆盖安装系统应用后，需执行 `cmd package install-existing --user 0 com.sohu.inputmethod.sogou.xiaomi` 恢复 user 0。
 4. 系统设置 → 输入法/语言与输入 → 启用本输入法，并切换为默认输入法。
-5. 在任意输入框短按删除键确认单删，再测试上滑清空与下滑恢复。
+5. 在任意输入框依次测试：短按单删、长按连删、上滑清空、下滑恢复。
 
 ## 配置参数
 
@@ -63,13 +64,13 @@ APK 本身沿用搜狗输入法的原有应用数据目录；本项目不额外�
 本项目没有公开 API，也不提供命令行工具。自动化验证可通过 Android `adb` 完成：
 
 ```bash
-adb install -r sogou-swipe-delete-android-arm64-v10.32.21-r32.apk
+adb install -r sogou-swipe-delete-android-arm64-v10.32.21-r37.apk
 adb shell ime enable com.sohu.inputmethod.sogou.xiaomi/.SogouIME
 adb shell ime set com.sohu.inputmethod.sogou.xiaomi/.SogouIME
 adb shell input swipe X Y X Y_UP 700
 ```
 
-自动化冒烟测试覆盖：上滑清空、下滑恢复、短按单删、左滑清空。
+自动化冒烟测试覆盖：上滑清空、下滑恢复、短按单删、长按连删、左滑清空。
 
 ## 项目来源与致谢
 
